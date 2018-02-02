@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by abebrese (http://jsbin.com/jiweraq/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<meta name="description" content="Assignment 3 page 3">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Abebrese Assignment 3</title>
+</head>
+  <style>
+    H3{color:black;
+    padding:0;
+    margin:0;
+    }
+    H5{color:black;
+    padding:0;
+    margin:0;}
+  </style>
+<body>
+  <h3> Assignment 3 </h3>
+  <h5>Kwasi Abebrese</h5>
+  
+  <br>
+  <a href="#" onclick="changeMap('basemapLandcover')">Basemap</a> &nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="changeMap('iowaBorder')">Iowa Border</a>&nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="changeMap('ScenicByways')"">Scenic Byways</a>&nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="changeMap('Interstate')">Interstate</a> &nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="changeMap('areaCode')"">Area Code</a> &nbsp;&nbsp;&nbsp;
+ <br>
+  
+  <img id="myMap" src="images\ScenicByways.png" width="600" height="400"
+
+</body>
+  <script>
+    function changeMap(x) {
+      document.getElementById("myMap").src="images/"+ x + ".png" 
+    }
+    
+  </script>
+</html>
