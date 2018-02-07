@@ -1,0 +1,116 @@
+<!doctype html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by abebrese (http://jsbin.com/ceqacod/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+ 
+<html lang="en">
+<head>
+<meta name="description" content="Select Region Number by Input Box">
+  <meta charset="utf-8" />
+  <title>Text Box Selector</title>
+
+  <link rel="stylesheet" href="layout.css" />
+  JS Bin</title>
+</head>
+</head>
+<h2>ASSIGNMENT 4</h2>
+
+<br>
+<h3>Countries in West Africa </h3>
+<p><body onload="load()">
+  <input type="button" onclick="countryList(1)" value="Change Country"></br>
+  
+<p>Country: <span id='country'>-</span><br>
+Capital City: <span id='capital'>-</span><br>
+
+<br>
+</body>
+</html>
+<body>
+ 
+  <p> <h3>Regions in Ghana</h3>
+  <label for="amount">Enter Alphabetic Number of Region:</label>
+  <input type="text" id="regionNum" style="border: 1; font-weight: bold;" onChange="regionDisplay()" value="-" size="4"/>
+</p>
+<div id="slider-range-max"></div>
+<br><br>
+<div id="regionName">-</div>
+ 
+ 
+<script id="jsbin-javascript">
+
+//make an array of objects
+var countries = [
+	{country: "Ghana", capital: "Accra"
+	},
+	 {country: "Togo", capital: "Lome"},
+	 {country: "Burkina Faso", capital: "Ouagadougou"},
+   { country: "Cote D'Ivoire", capital: "Yamossoukro"},
+   {country: "Benin", capital: "Cotonou"},
+  { country: "Nigeria", capital: "Abuja"
+  },
+  { country: "Mali", capital: "Bamako"}, 
+];
+
+
+var listCount = 0;
+
+
+function countryList() {
+	listCount = listCount + 1;
+	//check to see if it is larger than the list. If so reset to 0.
+	if (listCount >= (countries.length)) {  
+		listCount = 0;
+	}
+	
+	i = listCount;
+	document.getElementById("country").innerHTML = countries[i].country;
+	document.getElementById("capital").innerHTML = countries[i].capital;
+}
+
+	
+function load() {
+	document.getElementById("country").innerHTML = countries[0].country;
+	document.getElementById("capital").innerHTML = countries[0].capital;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //load values into array
+  var regionList = ["Ashanti Region", "Brong-Ahafo Region", "Central Region", "Eastern Region", "Greater-Accra Region", "Northern Region", "Upper-East Region", "Upper-West Region", "Western Region" , "Volta Region"];
+  
+  console.log(regionList.length); //will print 10
+  
+  function regionDisplay() {
+	  x = document.getElementById("regionNum").value;
+	  //remember Ashanti is item 0 in the array so x-1 is necessary.
+	  console.log("wrong: "+regionList[x]+",  correct: "+regionList[x-1]);
+	  document.getElementById("regionName").innerHTML = regionList[x-1];
+  } 
+ 
+
+</script>
+</body>
+</html>
