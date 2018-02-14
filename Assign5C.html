@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by abebrese (http://jsbin.com/betifoc/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>ASSIGNMENT 5 </title>
+  <style> 
+    *{
+      margin:0 px;
+        padding: 0px;
+    }
+    body{font-family:times new roman;
+    background color: #ABC;
+    padding: 0px}
+    
+    h1 {text-align: center;
+    border-bottom: 2px solid #009;
+    margin-bottom:15px;}
+    </style
+</head>
+  <h1> ASSIGNMENT 5</h1>   
+<div id='hide'>
+  
+    Name: <input type="text" id="myText" value="Type in your name"<br>
+  
+  <button type="button" onclick = "myFunction()" >Submit</button>
+  <div id="demo"></div>
+
+<p><strong>What is your gender?</strong><br>
+  <div class = "radio">
+    
+<input type="radio" id="gender1" name="sex" value="Male">Male<br>
+<input type="radio" id="gender2" name="sex" value="Female">Female<br> <br><em><strong>Click to Submit 
+    </strong></em></br>
+  <button type="button" onclick="displayFunction1()">Submit</button>
+    <div id="display"></div>
+    
+    <HR>
+   <div id="Visit to downtown Ames">        
+  <b>Have you ever visited downtown Ames before? </b><br>
+    Yes <input type="radio" value="Yes" name="myRadio"  onchange="myRadioChange()"><br>
+No <input type="radio" value="No" name="myRadio"  onchange="myRadioChange()">
+<br>
+    
+<p id="description" style="display:none">Downtown Ames is a very nice place you should go there one of these days!</p>    
+    
+    <p id="downtown" style="display:none">
+  <b>How often do you visit downtown Ames?</b><br>
+  <input type="radio" id = "visit2" name="visit to downtown" value = "Daily">Daily <br>
+<input type="radio" id = "visit2" name="visit to downtown" value="A few times a week">A few times a week<br>
+<input type="radio" id = "visit3"name="visit to downtown" value="A few times a month">A few times a month<br>
+<input type="radio" id = "visit4"name="visit to downtown" value="A few times a year">A few times a year<br> 
+  <br>
+    </p>    
+        </div>
+    
+  
+    
+  <HR>
+<strong>Which downtown events have you attended? </strong><br>
+<input type="checkbox" name="downtown events" value="Ames Main Street Farmer's Market" >Ames Main Street Farmer's Market<br>
+<input type="checkbox" name="visit to downtown" value="4th of July Parade">4th of July Parade<br>
+<input type="checkbox" name="visit to downtown" value="Summer sidewalk sales">Summer sidewalk sales<br>
+<input type="checkbox" name="visit to downtown" value="Trick or Treat">Trick or Treat<br>
+<input type="checkbox" name="visit to downtown" value="Oktoberfest">Oktoberfest<br>
+
+
+<div id="display"></div>
+  
+<HR>
+<i>Downtown Ames</br>
+<iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?q=Downtown%20Deli%2C%20Main%20Street%2C%20Ames%2C%20Iowa%2C%20USA&key=AIzaSyCIpkZEWHRl9NVj28J8Vpl7b3YDw8kPRuU" allowfullscreen></iframe> 
+
+</html>
+<script id="jsbin-javascript">
+function myFunction() {	
+  var x =  document.getElementById("myText").value;
+document.getElementById("demo").innerHTML = x; 
+}
+
+
+function displayFunction1() {
+    if (document.getElementById('gender1').checked) {
+        gender_value = document.getElementById('gender1').value;
+    } else if (document.getElementById('gender2').checked) {
+        gender_value = document.getElementById('gender2').value;
+    }
+ document.getElementById("display").innerHTML = gender_value;
+}
+
+
+function myRadioChange(){
+  var Value = document.querySelector('input[name = "myRadio"]:checked').value;
+  if (Value == "Yes"){
+    downtown.style.display = "block";
+    description.style.display = "none";
+    //var text = document.getElementById("downtown");
+      }else{
+        downtown.style.display = "none";
+        description.style.display = "block";
+        //var text = document.getElementById("description");
+      }
+}
+
+function displayFunction2() {
+    if (document.getElementById('visit1').checked) {
+        value = document.getElementById('visit1').value;
+    } else if (document.getElementById('visit2').checked) {
+        value = document.getElementById('visit2').value;
+    } else if
+   (document.getElementById('visit3').checked) {
+        value = document.getElementById('visit3').value;
+    } else if
+   (document.getElementById('visit4').checked) {
+        value = document.getElementById('visit4').value;
+    } else if
+   (document.getElementById('visit5').checked) {
+        value = document.getElementById('visit5').value;
+    }
+ document.getElementById("display").innerHTML = value;
+}
+</script>
