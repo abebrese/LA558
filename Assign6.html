@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by abebrese (http://jsbin.com/lexexef/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<meta name="description" content="ASSIGNMENT 6">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width"> <script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">]
+</script>
+
+<style id="jsbin-css">
+*{
+      margin:0 px;
+        padding: 0px;
+    }
+    body{font-family:times new roman;
+      
+    padding: 0px}
+    
+    h1 {text-align: center;
+    border-bottom: 2px solid #009;
+    margin-bottom:15px;}
+</style>
+</head>
+<body>
+  <h1> ASSIGNMENT 6</h1>
+<div id="myText">
+
+<h3> Example 1: The elements selector  </h3>
+
+<p1>This particular JQuery selector function selects elements based on the element name.</p1>
+  <p> Click the button below and see what happens to the selected paragraph above!</p>
+
+<br> <button id="button1">Click me </button>
+  <hr>
+  
+  <h3>Example 2: The id Selector </h3>
+
+<p>This particular JQuery selector function uses the id attribute of an HTML tag to find a specific element.</p>
+<p id="test">Click the button below and see what happens. The first paragraph has no id </p>
+
+<button id="button2">Click me</button>
+<hr>
+  
+  
+  <h3>Example 3: The Class Selector</h3>
+
+<p> This JQuery selector finds elements with a specific class.</p>
+<p class="Test1">When you click on the button the paragraph with a class will fade out.</p>
+
+<button id="button3">Click me </button>
+<br><hr>
+  
+<p>Click this button and see what happens!</p>
+<button id="button4">Click me</button>
+  
+  </div>
+  <p id="finalexample"></p>
+  
+</body>
+</html>
+
+<script id="jsbin-javascript">
+//Example 1
+$(document).ready(function(){
+    $("#button1").click(function(){
+        $("p1").fadeOut(3000);
+    });
+});
+
+//Example 2
+    $("#button2").click(function(){
+        $("#test").fadeOut(3000);
+    });
+
+//Example 3
+    $("#button3").click(function(){
+        $(".Test1").fadeOut(3000);
+    });
+
+//Example 4
+$("#button4").click(function(){
+    $("#myText").hide(3000);
+  $("#finalexample").html("Everything disappears!");
+    });
+
+</script>
+</body>
+</html>
