@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by abebrese (http://jsbin.com/ribipis/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<meta name="description" content="Assignment 8.2">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assigment 8</title>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" /> <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+  
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  
+<style id="jsbin-css">
+#map {
+     width: 500px;
+     height: 400px;
+     background-color: red;
+}
+
+
+</style>
+</head>
+<body>
+  <h3> Assignment 8</h3>
+  <h4><i>Kumasi Metropolitan Area in Ghana and its surrounding towns</i></h3>
+<div id='map'></div>
+  <br>
+  Pan to <a href="javascript:Kumasi()"> Kumasi, Ghana </a><br><br>
+  
+  <a href="#" id='zoomOut'>Zoom Out level </a><br><br>
+  
+  <button id ="Adum" >Visit Downtown, Kumasi</button><br><br>
+   
+  <button id ="Ejisu" >Visit Ejisu, Ghana</button>
+<script id="jsbin-javascript">
+var map = L.map('map').setView([6.6666, -1.616271], 13);
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+var marker1 = L.marker([6.689631, -1.623031]).addTo(map)
+   .bindPopup("Standard Chartered Bank (Address: 1 Harper Road, Adum, Kumasi)")
+   .openPopup();
+
+var marker2 = L.marker([6.686579, -1.621689], {
+      draggable:  true,
+      title:  'Japan Motors (Address:114 Prempeh I St, Adum Kumasi)'
+      }).addTo(map);
+
+var marker3 = L.marker([6.691572, -1.624705]).addTo(map)
+   .bindPopup("Military Museum (Address: 104 Stewart Ave, Adum, Kumasi)")
+   .openPopup();
+
+var marker4 = L.marker([6.686609, -1.623644]).addTo(map)
+   .bindPopup("Gas station (Address: 106 Harper Road, Adum, Kumasi)")
+   .openPopup();
+
+var marker5 = L.marker([6.689067, -1.619098]).addTo(map)
+   .bindPopup("Airtel Ghana Ltd. (Address: 70 Osei Tutu I Ave, Adum, Kumasi)")
+   .openPopup();
+
+//add circle with options
+var circle = L.circle([6.691877, -1.62872], 2000, {
+      color:  'green',
+      fillcolor: '#ff7800',
+      fillOpacity: 0.5
+}).addTo(map);
+
+//add circle with options
+var circle = L.circle([6.714975, -1.511181], 1500, {
+      color:  'green',
+      fillcolor: "#f03",
+      fillOpacity: 0.5
+}).addTo(map);
+
+var cm = new L.circleMarker([6.666667, -1.616667], {
+   radius: 10,
+    color: "#800" ,
+    fillcolor: "#ff7800",
+  weight: 0,
+  opacity: 1,
+    fillOpacity: 0.3             
+      })
+
+//add circle with options
+var circle = L.circle([6.528158, -1.477311], 1000, {
+      color:  'red',
+      fillcolor:'#f03',
+      fillOpacity: 0,
+  weight: 0
+}).addTo(map);
+
+//CircleMarker
+var cm1 = new L.circleMarker([6.682185, -1.624112],{
+    radius:  10,
+    stroke:  true,
+    color:  'black',
+    opacity:  1,
+    weight:  1,
+    fill:  true,
+    fillColor:  "green",
+    fillOpacity:  1
+}).addTo(map);
+
+
+//----------Adding multiple town markers----------
+
+//a array list of towns
+var towns = [
+	[6.6666, -1.616271, "Kumasi, Ghana"],
+	[6.659642, -1.642821, "Bekwai,Ghana"],
+	[6.714976, -1.511181, "Ejisu, Ghana"]
+];
+
+//loop through the array and add a marker for each
+for (var i = 0; i < towns.length; i++) {
+	marker = new L.marker([towns[i][0],towns[i][1]])
+	.bindPopup(towns[i][2])
+	.addTo(map);
+}
+
+
+
+
+//Pan to Kumasi
+function Kumasi() {
+	map.panTo(new L.LatLng(6.6666, -1.616271,12));
+}
+
+//set Zoom
+$("#zoomOut").click(function(){
+	map.setZoom(11);
+});
+
+
+//Downtown, Kumasi
+$("#Adum").click(function(){
+	map.setView(new L.LatLng(6.691877, -1.62872), 14);
+});
+
+//Ejisu, Ghana
+$("#Ejisu").click(function(){
+	map.setView(new L.LatLng(6.714976, -1.511181), 13);
+});
+
+</script>
+</body>
+</html>
