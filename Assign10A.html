@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by abebrese (http://jsbin.com/sojijaq/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<meta name="description" content="Assignment 10.2">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assigment 10</title>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" /> <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+  
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  
+<style id="jsbin-css">
+#map {
+     width: 600px;
+     height: 600px;
+     background-color: red;
+}
+
+
+ 
+</style>
+</head>
+<body>
+  <h2> Assignment 10</h2>
+  
+ <hr>
+<div id='map'></div>
+  <hr>
+  <br><button type="button" id="Adum">Visit Downtown, Kumasi</button><br><br>
+	  <button type="button" id="Accra">Visit Accra, Ghana</button><br><br>
+  <button type="button" id="getZoom">Get Zoom</button> the Zoom is <span id="theZoom"></span><br><hr>
+  <br>A click on the first button zooms into the Central Business District of the Kumasi Metropolitan Area in Ghana.<br><br> The second button zooms into Accra, the capital city <br><br>Clicking on a marker will open up a new webpage containing information on the particular landmark or business the marker is representing. Hovering over a marker will display a tooltip for the landmark as well.</br>
+  
+<script id="jsbin-javascript">
+//Alternative way to set up a project. jQuery Doc ready contains two function calls.
+
+$(document).ready(function() {
+  init_map();
+  add_marker();
+});
+var map;
+
+
+//First function call creates the map
+function init_map() {
+map = L.map('map').setView([7.946527, -1.023194], 6);
+
+ 
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', 
+            {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+ maxZoom: 18
+}).addTo(map);
+}
+
+
+//second function call add two markers that listen for an on click event
+function add_marker() {
+  //An array of point location and URLS
+  var points = [
+    ["P1", 6.689067, -1.619098, "Airtel Ghana Ltd. (Address: 70 Osei Tutu I Ave, Adum, Kumasi)", "africa.airtel.com/ghana/"],
+    ["P2", 6.689631, -1.623031, "Standard Chartered Bank (Address: 1 Harper Road, Adum, Kumasi)", "https://www.sc.com/gh/atms-and-branches.html"],
+    ["P3", 6.691572, -1.624705, "Kumasi Fort and Military Museum (Address: 104 Stewart Avenue, Adum, Kumasi)", "https://www.ghanamuseums.org/kumasi-fort-millitary-museum.php"],
+    ["P3", 6.69303, -1.625092, "Ghana Police Headquarters (Address: 15 Asratoase Street, Adum, Kumasi)", "http://police.gov.gh/en/index.php/ashanti-region/"],
+    ["P4", 6.689751, -1.620182, "Challenge Bookshop (Address: 35 Adum Road, Adum, Kumasi)", "https://www.ghanayello.com/company/8454/Challenge_Book_Shop"],
+    ["P5", 6.697223, -1.628720, "Komfo Anokye Teaching Hospital", "http://www.kathhsp.org/"],
+    ["P6", 6.690106, -1.626376, "Ashanti Regional Health Directorate (Address: 2 Ayaakesieho Close, Adum, Kumasi)", "http://www.ghanahealthservice.org/rhdcategory.php?ghsrid=10&cid=14"],
+    ["P7", 6.681691, -1.624186, "Kumasi City Hotel", "http://www.goldentulipkumasicity.com/"],
+    ["P8", 5.650562, -0.196224, "University of Ghana", "http://www.ug.edu.gh/"],
+    ["P9", 6.686611, -1.623435, "Kumasi Metropolitan Assembly", "http://www.kma.gov.gh/kma/"]
+  ]
+  ;
+  //Create a marker array by looping through the point array data
+  var marker = [];
+  var i;
+  for (i = 0; i < points.length; i++) {
+    marker[i] = new L.Marker([points[i][1], points[i][2], points[i][3]], {
+      title: points[i][3],
+      win_url: points[i][4]
+    });
+    marker[i].addTo(map);
+    marker[i].on('click', onClick);
+  }
+}
+
+function onClick(e) {
+  console.log(this.options.win_url);
+  window.open(this.options.win_url);
+}
+
+
+
+
+
+$(document).ready(function () {
+    //map.setView(location, map.getZoom());	
+    $('#Adum').click(function () {
+        c = new L.LatLng(6.691877, -1.62872);
+        map.setView(c, 15);
+    });
+
+
+    $('#Accra').click(function () {
+        map.setView([5.603716800000001, -0.18696439999], 12);
+    });
+
+
+    $('#getZoom').click(function () {
+        x = map.getZoom();
+        $('#theZoom').html(x);
+    });
+                     });
+</script>
+</body>
+</html>
