@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by abebrese (http://jsbin.com/panozav/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+    <meta name="description" content="Assignment 12.2" />
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  
+
+  
+  <style id="jsbin-css">
+html, body
+#map {
+     position:relative;
+     width: 1000px;
+     height: 400px;
+    /* background-color: red;*/
+}
+#container {
+	background-color: white;
+	width: 1000px;
+	margin-right: auto;
+	margin-left: auto;
+   border-style: solid;
+   border-width: 5px;
+}
+#header{
+  
+	padding: 10px;
+	background-color: black;
+	color: white;
+	text-align: center;
+}
+
+#footer {
+	padding: 10px;
+	background-color: black;
+	color: white;
+	text-align: center;
+}
+
+
+</style>
+</head>
+  
+  <body>
+    <div id="container">
+    <div id="header">
+      <h2> LA 558 </h2>
+      <h3> Assignment 12</h3>
+      <h3> Some Facilities and their Corresponding Street Addresses in Kumasi</h3>
+<div id="map"></div>
+      <div id ="footer">
+        Kwasi Abebrese, Department of Community and Regional Planning, ISU </div>
+<body>
+
+<script id="jsbin-javascript">
+console.clear();
+
+//JSON 
+var healthfacilities = [{
+    "name" : "Rabito Clinic",
+    "lat" : "6.692978",
+    "long" : "-1.622642",
+    "iconColor" : "0000ff",
+    "popupText" : "Address: 104 Nkraam Road"
+  
+ 
+},
+                        
+                        
+{
+    "name" : "Kama Health Service",
+    "lat" : "6.694284",
+    "long" : "-1.622581",
+    "iconColor" : "ff0000",
+    "popupText" : "Address: 1 Nkraam Road"
+},
+ 
+  {
+    "name" : "KMA Clinic",
+    "lat" : "6.68541",
+    "long" : "-1.623336",
+    "iconColor" : "ff0000",
+    "popupText" : "Address: 111 Harper Road"
+  },
+  {"name" : "Komfo Anokye Teaching Hospital",
+    "lat" : "6.697223",
+    "long" : "-1.62872",
+    "iconColor" : "ff0000",
+    "popupText" : "Address: 107 Okom Road"
+  },
+                        
+  {"name" : "Adum Clinic",
+    "lat" : "6.691424",
+    "long" : "-1.621311",
+    "iconColor" : "ff0000",
+    "popupText" : "Address: 11 Adum Road"
+  },
+   {"name" : "Amponsa Effah Pharmaceutical Ltd.",
+    "lat" : "6.689168",
+    "long" : "-1.619007",
+    "iconColor" : "ff0000",
+    "popupText" : "Address: 69 Osei Tutu I Ave"
+}];
+
+
+
+
+//GeoJSON
+var myGeoJSON = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-1.62872,6.691877]}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-1.509117,6.715081]}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-1.583848,6.453226]}},{"type":"Feature","properties":{},"geometry":{"type":"LineString","coordinates":[[-1.509117,6.715081],[-1.62872,6.691877],[-1.583848,6.453226],[-1.62872,6.691877]]}}]};
+
+
+
+
+//Base Layers
+var OSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 18
+});
+
+
+//create the map
+var map = L.map('map', {
+  center: new L.LatLng(6.691877, -1.62872),
+  zoom: 13,
+  layers: [OSM]
+});
+
+
+var iconMarkerURL = "http://www.google.com/mapfiles/marker.png";
+
+ for (var i = 0; i < healthfacilities.length; i++) {
+
+  //access the data by index i   for example 
+  console.log(healthfacilities[i].name);
+  
+  var marker = L.marker([healthfacilities[i].lat, healthfacilities[i].long], {    
+    icon: L.icon({
+      iconUrl: 'http://www.google.com/mapfiles/marker.png',
+      iconSize:[12, 19],
+      iconAnchor:[5, 17],
+      popupAnchor:[0, -20]
+    }),
+    title: healthfacilities[i].name
+  }).bindPopup("<b>"+healthfacilities[i].name+"</b><br>"+healthfacilities[i].popupText+".").addTo(map);
+}
+
+
+
+//style for geojson polyline and polygons
+//Markers will use default
+var myStyle = {
+    "color": "#ff7800",
+    "weight": 5,
+    "opacity": 0.65,
+};
+
+L.geoJSON(myGeoJSON, {
+    style: myStyle,
+}).addTo(map);
+
+//BaseMaps
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
+var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+	
+
+var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+  maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+ 
+var OpenMapSurfer_Roads = L.tileLayer('https://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', {
+	maxZoom: 20,
+	attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+
+// Overlay layers
+
+//------ Vector and Marker Layers stuff
+var address1 = L.marker([6.689067, -1.619098]).bindPopup('<b>Airtel Ghana Ltd</b> <br>Address:70 Osei Tutu I Ave, Adum, Kumasi</br>'),
+address2= L.marker([6.689631, -1.623031]).bindPopup('<b>Standard Chartered Bank</b><br>Address: 1 Harper Road, Adum, Kumasi</br>'),
+ address3= L.marker([6.686579, -1.621689]).bindPopup('<b>Japan Motors</b><br>Address: 114 Prempeh I Street</br>'),
+    address4= L.marker([6.690106, -1.626376]).bindPopup('<b>Mitsubishi Motors</b><br>Address: 102 Harper Road, Adum, Kumasi</br>'),
+        address5= L.marker([6.694038, -1.623815]).bindPopup('<b>SG SSB Bank</b><br>Address: 5 Asratoase Street, Adum, Kumasi</br>');
+var address6 = L.marker([6.691339, -1.621406]).bindPopup('<b>Fashion Fair</b><br>Address: 12 Adum Road, Adum, Kumasi</br>');
+
+
+var polygon = L.polygon([
+    [6.698293,-1.6222185],
+    [6.699886, -1.623767],
+    [6.698852, -1.624684],
+	[6.697462, -1.622968]
+],{
+    color: 'yellow',
+    fillColor: 'yellow',
+    fillOpacity: 0.9
+}).bindPopup('Bus Terminal');
+
+
+var pointA = new L.LatLng(6.697611, -1.628600);
+var pointB = new L.LatLng(6.695783, -1.628702);
+var pointC = new L.LatLng(6.695804, -1.629796);
+var pointD = new L.LatLng(6.697690, -1.629736);
+var pointList = [pointA, pointB, pointC, pointD];
+
+var myPolyline = new L.Polyline(pointList, {
+    color: 'blue',
+    weight: 3,
+    opacity: 0.5,
+    smoothFactor: 1
+});
+
+
+
+var Businesses = L.layerGroup([address1, address2, address3, address3, address4,address5,address6, polygon]);
+
+
+
+//add circle with options
+var circle = L.circle([6.691877, -1.62872], 2000, {
+      color:  'green',
+      fillcolor: '#ff7800',
+      fillOpacity: 0.1
+}).addTo(map);
+
+		//layer control
+		var baseMaps = {
+			"Esri_WorldImagery": Esri_WorldImagery,
+      "OpenTopoMap":OpenTopoMap,
+			"OpenStreetMap_Mapnik": OpenStreetMap_Mapnik,
+			"OpenMapSurfer_Roads": OpenMapSurfer_Roads,
+		};
+       		
+		var overlayMaps = {
+      "Health Facilities": marker,
+			"Businesses": Businesses,
+      "Downtown Area": circle,
+      
+			
+		};
+	
+		L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
+</script>
+</body>
+</html>
