@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by abebrese (http://jsbin.com/nudigib/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta name="description" content="Assignment 13.2" />
+
+  
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" /> <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+	  
+	<script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+  
+   <style id="jsbin-css">
+  
+
+#map {  position:relative;
+     width: 1000px;
+     height: 400px;
+
+}#container{
+	background-color: #c2a5cf;
+	width: 1000px;
+	margin-right: auto;
+	margin-left: auto;
+   border-style: solid;
+   border-width: 5px;
+}
+#header, #footer {
+	clear: both;
+	padding: 10px;
+	background-color: black;
+	color: white;
+	text-align: center;
+}
+
+.legend {
+    line-height: 10px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+.info {
+    padding: 6px 8px;
+    font: 10px/20px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+
+</style>
+</head>
+  <body>
+    
+    <div id="container">
+      <div id = "header">
+    <h2>LA 558  </h2>
+    <h3> Assignment 13: Leaflet legends and loading external JSON/GeoJSON</h3>
+   </div>
+      <div id="map"></div>
+      <div id = "footer"><i>Kwasi Abebrese, Department of Community and Regional Planning, ISU</i></div>
+<script id="jsbin-javascript">
+console.clear();
+
+var map = L.map('map').setView([7.946527, -1.023194], 6);
+
+// add an OpenStreetMap tile layer
+var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 18
+}).addTo(map);
+
+
+//set color of marker
+function getColor(d) {
+  return d <= '702110' ? '#02fc2c' :
+    d <= '1046545' ? "#02c922" :
+   d <= '2811252' ? "#019318" :
+    d <= '4780380' ? "#016811" :
+   
+    "#FFFFFF";
+}
+
+
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.TotPop),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.6
+    };
+}
+
+
+url = "https://abebrese.github.io/LA558/gh(4).geojson";
+
+var geojsonLayer = new L.GeoJSON.AJAX(url , {
+	style: style,
+	onEachFeature: function (feature, layer) {
+        htmlText = "<strong>" + feature.properties.Region+ "</strong><br>Capital: <b>"  + feature.properties.Capital + "</b><br>Population 2010: <b>"  + feature.properties.Pop2010 + "</b><br>Population 2016: <b>"  + feature.properties.Pop2016 + "</b>";
+layer.bindPopup(htmlText);	layer.bindTooltip(feature.properties.Region);
+    }
+}).addTo(map);
+
+
+
+	
+//Create Legend
+
+
+var legend = L.control({
+  position: 'bottomleft'
+});
+
+legend.onAdd = function(map) {
+  
+
+  var div = L.DomUtil.create('div', 'info legend'),
+    TotPop = [702110, 1046545, 2811252, 4780380],
+    labels = ['0 - 702,110','702111 - 1046545', '1046546 - 2811253','2811254 - 4780380'];
+
+
+   div.innerHTML += "<strong> Total Population (2010)</strong><br> <br>";
+
+  for (var i = 0; i < TotPop.length; i++) {
+    div.innerHTML +=
+      '<i style="background:' + getColor(TotPop[i] ) + ' "></i> ' +
+      labels[i]+'<br>';
+  }
+
+  return div;
+};
+legend.addTo(map);
+
+//BaseMaps
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
+var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+	
+
+var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+  maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+ 
+
+// Overlay layers
+
+//------ Vector and Marker Layers stuff
+var city1 = L.marker([5.603717, -0.186964]).bindPopup('Accra'),
+city2= L.marker([5.131510, -1.279474]).bindPopup('Cape Coast'),
+ city3= L.marker([4.901579, -1.783097]).bindPopup('Sekondi-Takoradi'),
+    city4= L.marker([7.334941, -2.312303]).bindPopup('Sunyani'),
+    city5= L.marker([9.403423, -0.842416]).bindPopup('Tamale'),
+    city6= L.marker([6.610149, 0.478549]).bindPopup('Ho'),
+    city7= L.marker([10.060074, -2.509891]).bindPopup('Wa'),
+    city8= L.marker([10.787542, -0.857982]).bindPopup('Bolgatanga'),
+        city9= L.marker([6.666600, -1.616271]).bindPopup('Kumasi');
+var city10 = L.marker([6.078443, -0.271394]).bindPopup('Koforidua');
+
+
+
+var Cities = L.layerGroup([city1, city2, city3, city4, city5, city6, city7, city8, city9, city10]);
+
+
+
+//add circle with options
+var circle = L.circle([6.691877, -1.62872], 2000, {
+      color:  'green',
+      fillcolor: '#ff7800',
+      fillOpacity: 0.1
+}).addTo(map);
+
+		//layer control
+		var baseMaps = {
+			"Esri_WorldImagery": Esri_WorldImagery,
+      "OpenTopoMap":OpenTopoMap,
+			"OpenStreetMap_Mapnik": OpenStreetMap_Mapnik,
+			
+		};
+       		
+		var overlayMaps = {
+			"Cities": Cities,
+      
+      
+			
+		};
+	
+		L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
+</script>
+</body>
+</html>
