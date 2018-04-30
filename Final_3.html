@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by abebrese (http://jsbin.com/xomeluc/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<meta name="description" content="plus_code1Abc">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" /> 
+	  
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+  
+   <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+    <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+  
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    
+<link rel="stylesheet" href="https://abebrese.github.io/LA558/Markers/Leaflet.awesome-markers/leaflet.awesome-markers.css">
+ 
+  <script src="https://abebrese.github.io/LA558/Markers/Leaflet.awesome-markers/leaflet.awesome-markers.min.js"></script>
+  
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  
+   <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+  
+  <script src="https://abebrese.github.io/LA558/data/landmarks_loc.geojson"></script>
+  
+  <script src="https://abebrese.github.io/LA558/data/addressPoints5.js"></script>
+  
+  <script src="https://abebrese.github.io/LA558/data/parcel_points_1.geojson"></script>
+  
+ 
+  
+  <script src="https://abebrese.github.io/LA558/data/landmarks.geojson"></script>
+<script>
+  
+ 
+  
+  <script>
+    var bbox = turf.bbox(features);
+</script>
+	
+  
+<style id="jsbin-css">
+#map {
+
+     position:relative;
+     width: 1289px;
+     height: 700px;
+
+}
+#header, #footer {
+	clear: both;
+	padding: 10px;
+	background-color: slategrey;
+	color: white;
+	text-align: center;
+}
+
+#container {
+	background-color: white;
+	width: 1299px;
+	margin-right: auto;
+	margin-left: auto;
+   border-style: solid;
+   border-width: 5px;
+}
+
+
+.btn-group
+{
+ background-color: #084594;
+}
+
+
+
+
+
+
+</style>
+</head>
+<body>
+ <div id="container">
+     <div id = "header">
+        
+       <h3> ADDRESS LOCATION AND THE MANAGEMENT OF URBAN FACILITIES WITHIN THE KUMASI METROPOLITAN AREA
+       
+     </div><br>
+	 <div><p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+	  Enter address: <input type="text" value= "4 Stewart Avenue, Kumasi" id="myAddress">
+     <button type="button" id='geocode'> Find Location</button></div> <br>
+     <div id="address"></div>
+   
+           
+          <div class="btn-group " data-toggle="buttons">
+          <label class="btn btn-primary" id="Adum">
+            <input type="radio" name="options" id="Major Landmarks" autocomplete="off"> Zoom to Downtown Area
+          </label>
+          <label class="btn btn-primary" id="getZoom">
+            <input type="radio" name="options" id="getZoom" autocomplete="off"> Get Zoom : <span id="theZoom"></span>
+          </label>
+   </div>
+   
+   <div id="map"></div>
+       
+ 
+<script id="jsbin-javascript">
+console.clear();
+
+var map = L.map('map').setView([6.691877, -1.62872], 20);
+
+// add an OpenStreetMap tile layer
+var osm= L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 30
+}).addTo(map);
+
+
+
+  
+ 
+
+function addPopups(feature, layer) {
+  layer.bindPopup("<b>Name: </b>" + feature.properties.Name +
+    "<br><b> Status: </b>" + feature.properties.Status);
+}
+
+var geojsonMarkerOptions = {
+  radius: 3,
+  fillColor: "#ff7800",
+  color: "#000",
+  weight: 1,
+  opacity:0.8,
+  fillOpacity: 0.8
+};
+
+var geojsonMarkerOptions1 = {
+  radius: 3,
+  fillColor: "yellow",
+  color: "#000",
+  weight:1,
+  opacity: 0.8,
+  fillOpacity: 0.8
+};
+
+var geojsonMarkerOptions2 = {
+  radius: 3,
+  fillColor: "blue",
+  color: "#000",
+  weight: 1,
+  opacity: 0.75,
+  fillOpacity: 0.75
+};
+var hydrants= L.geoJson(myData, {
+  onEachFeature: addPopups,
+  filter: function(feature, layer) {
+    
+    //if (feature.properties.Landmark_Type == 'Businesses') {	
+    if (feature.properties.Landmark_Type == 'Fire_Hydrant') {
+      return true;
+    }
+  },
+  pointToLayer: function(feature, latlng) {
+    return L.circleMarker(latlng, geojsonMarkerOptions);
+  }
+}).addTo(map);
+
+
+//this will zoom to the resulting data from allAirports
+map.fitBounds(hydrants.getBounds(), {
+  padding: [10, 10]
+});
+
+
+ function getColor(d) {
+  return d = "#fff"; //white
+}
+
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.name),
+        weight: 0.5,
+        opacity: 0.5,
+        color: 'blue',
+        dashArray: '0',
+        fillOpacity: 0
+    };
+}
+url = "https://abebrese.github.io/LA558/data/parcel(2).geojson";
+
+//var parcels = new L.GeoJSON.AJAX(url, {
+	//style: style,
+	//onEachFeature: function (feature, layer) {
+        //htmlText = "<strong>Address:  </strong>"+ //feature.properties.name;
+//layer.bindPopup(htmlText);	
+//    }
+//}).addTo(map);
+
+
+
+function addPopups1(feature, layer) {
+  layer.bindPopup("<b>Address: </b>" + feature.properties.name);
+}
+
+var parcel_points = L.geoJson(myParcels, {
+  onEachFeature: addPopups1,
+  filter: function(feature, layer) {
+    
+    //if (feature.properties.Landmark_T == 'Businesses') {	
+    if (feature.properties.Landmark_T == 'parcels') {
+      return true;
+    }
+  },
+  pointToLayer: function(feature, latlng) {
+    return L.circleMarker(latlng, geojsonMarkerOptions1);
+  }
+}).addTo(map);
+
+
+//this will zoom to the resulting data from allAirports
+map.fitBounds(parcel_points.getBounds(), {
+  padding: [10, 10]
+});
+
+
+function addPopups2(feature, layer) {
+  layer.bindPopup("<b>Name: </b>" + feature.properties.Name);
+}
+
+
+//var businesses = L.geoJson(myLandmarks, {
+  //onEachFeature: addPopups2,
+ // filter: function(feature, layer) {
+    
+    //if (feature.properties.Landmark_T == 'Businesses') {	
+   // if (feature.properties.Landmark_Type == 'Business') {
+    //  return true;
+  //  }
+  //},
+  //pointToLayer: function(feature, latlng) {
+  //  return L.circleMarker(latlng, geojsonMarkerOptions2);
+ // }
+//}).addTo(map);
+
+
+//this will zoom to the resulting data from allAirports
+//map.fitBounds(businesses.getBounds(), {
+ // padding: [10, 10]
+//});
+
+
+
+var markers = L.markerClusterGroup();
+		var singleMarkers = L.layerGroup([]);
+
+		for (var i = 0; i < addressPoints.length; i++) {
+		  var a = addressPoints[i];
+		  var title = a[2];
+		  var marker = L.marker(new L.LatLng(a[0], a[1]), {
+		    title: title
+		  });
+		  marker.bindPopup(title);
+		  markers.addLayer(marker);
+		  singleMarkers.addLayer(marker);
+		}
+
+		map.addLayer(markers);
+
+//BaseMaps
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 28,
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
+
+var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+  maxZoom: 30,
+	attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+
+//uncomment for testing
+//$('#myAddress').val('1 Harper Road, Adum, Kumasi');
+
+
+$('#geocode').click(function () {
+    myAddress = encodeURI($('#myAddress').val());
+  
+
+    
+
+    var plus_codeAPI_URL = "https://plus.codes/api?address=" +myAddress+ "&sensor=true&key=AIzaSyDof-1M3bis7xlxxqifvghoyh5rlpJh5-M&email=kwasiabebs2002@gmail.com";
+
+    console.log(plus_codeAPI_URL);
+
+    //Start Geocoding
+    $.getJSON(plus_codeAPI_URL, function (json) {
+        
+        var address = json.plus_code.best_street_address;
+        var lat = json.plus_code.geometry.location.lat;
+        var long = json.plus_code.geometry.location.lng;
+      var global_code= json.plus_code.global_code;
+      var local_address=json.plus_code.locality.local_address;
+      var local_code = json.plus_code.local_code;
+        console.log(address);
+        console.log(lat);
+        console.log(long);
+      console.log(global_code)
+      console.log(local_code)
+      
+        var locality = '';
+       
+        $.each(json.locality, function (json) {
+            level = json.local_address;
+            if ('local_address' === level.toLowerCase()) {
+                Locality = (json.plus_code.locality.local_address);
+            }
+          else if ('locality_place_id' === level.toLowerCase()) {
+                    locality_place_id = (json.plus_code.locality.locality_place_id);
+      }
+        });
+        
+        var iconMarkerURL = "http://www.google.com/mapfiles/marker.png";
+      
+        //now add the marker to the map
+        var marker = L.marker([lat, long],  {icon: L.icon({
+		iconUrl: 'http://www.google.com/mapfiles/marker.png',
+      iconSize:[30, 40],
+      iconAnchor:[5, 17],
+      popupAnchor:[0, -20]
+    }),
+            draggable: false,
+            title: address,
+            opacity: 1
+        }).addTo(map);
+
+      displayData = "<B>Address: " + address + "<br> Lat: " + lat + " <br> Lon: " + long+"<br>Global Code: "+ global_code+ "<br> Local Code:"+    local_code;
+      
+        marker.bindPopup(displayData).openPopup();
+        $("#address").html(showData);
+		   displayData='';
+		map.setView([lat, long]);
+
+
+    });
+  
+
+//Pan to Kumasi
+function Kumasi() {
+	map.panTo(new L.LatLng(6.6666, -1.616271,12));
+}
+
+ $('#getZoom').click(function () {
+        x = map.getZoom();
+        $('#theZoom').html(x);
+    });
+                     
+
+
+//Downtown, Kumasi
+$("#Adum").click(function(){
+	map.setView(new L.LatLng(6.691877, -1.62872), 17);
+});
+    
+
+//layer control
+var baseMaps ={
+  "Esri_WorldImagery ":Esri_WorldImagery,
+  "OpenTopoMap":OpenTopoMap,
+  "OpenStreetMap":osm,
+};
+
+//Ovelay control
+var overlayMaps ={
+  "Fire_Hydrants":hydrants,
+  "Parcels":parcels,
+  "Address_Points":parcel_points,
+		  "Businesses": markers,
+
+};
+
+L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+}); //end geocode click function
+</script>
+</body>
+</html>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
